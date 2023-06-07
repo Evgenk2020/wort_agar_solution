@@ -3,7 +3,7 @@
 
 void help();
 void info();
-void data_run(float first_solution, float finish_solution, float vol_filtrate);
+void data_run(wort_solution wrt);
 
 int main(int argc, char *argv[])
 {
@@ -33,14 +33,11 @@ int main(int argc, char *argv[])
 
     else if (argc == 5 && similar == k_data)
     {
-        float data[3];
-
-        for (int i = 0; i < 3; i++)
-        {
-            data[i] = atof(argv[i + 2]);
-        }
-
-        data_run(data[0], data[1], data[2]);
+        wort_solution wort;
+        wort.first_wort = atof(argv[2]);
+        wort.finish_wort = atof(argv[3]);
+        wort.vol_filtrate = atof(argv[4]);
+        data_run(wort);
     }
 
     else
@@ -75,13 +72,13 @@ void info()
               << "и концентрации приготавливаемого раствора" << std::endl;
 }
 
-void data_run(float first_solution, float finish_solution, float vol_filtrate)
+void data_run(wort_solution wrt /*float first_solution, float finish_solution, float vol_filtrate*/)
 {
-    std::cout << "Концентрация неразбавленного раствора: " << first_solution << "%" << std::endl;
-    std::cout << "Концентрация разбавленного раствора: " << finish_solution << "%" << std::endl;
-    std::cout << "Объем фильтрата: " << vol_filtrate << " мл" << std::endl;
+    std::cout << "Концентрация неразбавленного раствора: " << wrt.first_wort << "%" << std::endl;
+    std::cout << "Концентрация разбавленного раствора: " << wrt.finish_wort << "%" << std::endl;
+    std::cout << "Объем фильтрата: " << wrt.vol_filtrate << " мл" << std::endl;
 
     solution sol;
-    std::cout << "Объем воды для разбавления: " << sol.solutions(sol.water_first)->get_solvation(first_solution, finish_solution, vol_filtrate) << " мл" << std::endl;
-    std::cout << "Объем разбавленной среды: " << sol.solutions(sol.worts_second)->get_solvation(sol.solutions(sol.water_first)->get_solvation(first_solution, finish_solution, vol_filtrate), vol_filtrate, 0) << " мл" << std::endl;
+    std::cout << "Объем воды для разбавления: " << sol.solutions(sol.water_for_solvation)->get_solvation(wrt) << " мл" << std::endl;
+    std::cout << "Объем разбавленной среды: " << sol.solutions(sol.total_volume)->get_solvation(wrt) << " мл" << std::endl;
 }

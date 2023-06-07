@@ -1,6 +1,8 @@
 #!/bin/bash
 
-CURR_DIR=$(dirname $(realpath "$0"))
+CURR_DIR=$(realpath "$0")
+CURR_DIR=$(dirname $CURR_DIR)
+
 BUILD_TARGET=$CURR_DIR/build
 
 #rm -rd $BUILD_TARGET

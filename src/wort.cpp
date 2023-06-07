@@ -7,37 +7,39 @@ solution::~solution() {}
 
 class finished_water : public wort
 {
-    virtual float get_solvation(float first_wort_flock, float finish_wort_flock, float volume_filtrate) const
+public:
+    virtual float get_solvation(wort_solution wrt) const
     {
-        if (finish_wort_flock == 0)
+        if (wrt.finish_wort == 0)
         {
             std::cout << "Ошибка... занчение не может быть равным нулю" << std::endl;
             exit(1);
         }
 
-        return ((first_wort_flock - finish_wort_flock) * (volume_filtrate / finish_wort_flock));
+        return (wrt.first_wort - wrt.finish_wort) * (wrt.vol_filtrate / wrt.finish_wort);
     }
 };
 
 class finished_wort : public wort
 {
-    virtual float get_solvation(float volume_aqua, float volume_filtrate, float zero) const
-    {
-        return (volume_aqua + volume_filtrate);
-    }
+private:
+    finished_water fin_water;
+
+public:
+    virtual float get_solvation(wort_solution wrt) const { return fin_water.get_solvation(wrt) + wrt.vol_filtrate; }
 };
 
 std::unique_ptr<wort> solution::solutions(solution_type types)
 {
     switch (types)
     {
-    case solution_type::water_first:
+    case solution_type::water_for_solvation:
     {
         return std::make_unique<finished_water>();
         break;
     }
 
-    case solution_type::worts_second:
+    case solution_type::total_volume:
     {
         return std::make_unique<finished_wort>();
         break;

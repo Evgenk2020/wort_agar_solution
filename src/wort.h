@@ -3,10 +3,17 @@
 
 #include <memory>
 
+struct wort_solution
+{
+    float first_wort;
+    float finish_wort;
+    float vol_filtrate;
+};
+
 class wort
 {
 public:
-    virtual float get_solvation(float first_wort_flock_or_vol_aqua, float finish_wort_flock_or_vol_filtrate, float vol_filtrate_or_zero) const = 0;
+    virtual float get_solvation(wort_solution wrt) const = 0;
     ~wort();
 };
 
@@ -15,8 +22,8 @@ class solution
 public:
     enum solution_type
     {
-        water_first,
-        worts_second
+        water_for_solvation,
+        total_volume
     };
 
     static std::unique_ptr<wort> solutions(solution_type types);
