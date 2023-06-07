@@ -47,15 +47,13 @@ std::unique_ptr<wort> solution::solutions(solution_type types)
 
 float finished_water::get_solvation(wort_solution wrt) const
 {
+    if (wrt.finish_wort == 0)
     {
-        if (wrt.finish_wort == 0)
-        {
-            std::cout << "Ошибка... занчение не может быть равным нулю" << std::endl;
-            exit(1);
-        }
-
-        return (wrt.first_wort - wrt.finish_wort) * (wrt.vol_filtrate / wrt.finish_wort);
+        std::cout << "Ошибка... занчение не может быть равным нулю" << std::endl;
+        exit(1);
     }
+
+    return (wrt.first_wort - wrt.finish_wort) * (wrt.vol_filtrate / wrt.finish_wort);
 }
 
 float finished_wort::get_solvation(wort_solution wrt) const { return fin_water.get_solvation(wrt) + wrt.vol_filtrate; }
