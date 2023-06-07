@@ -8,16 +8,7 @@ solution::~solution() {}
 class finished_water : public wort
 {
 public:
-    virtual float get_solvation(wort_solution wrt) const
-    {
-        if (wrt.finish_wort == 0)
-        {
-            std::cout << "Ошибка... занчение не может быть равным нулю" << std::endl;
-            exit(1);
-        }
-
-        return (wrt.first_wort - wrt.finish_wort) * (wrt.vol_filtrate / wrt.finish_wort);
-    }
+    virtual float get_solvation(wort_solution wrt) const;
 };
 
 class finished_wort : public wort
@@ -26,8 +17,10 @@ private:
     finished_water fin_water;
 
 public:
-    virtual float get_solvation(wort_solution wrt) const { return fin_water.get_solvation(wrt) + wrt.vol_filtrate; }
+    virtual float get_solvation(wort_solution wrt) const;
 };
+
+//------------------------------------------------------
 
 std::unique_ptr<wort> solution::solutions(solution_type types)
 {
@@ -51,3 +44,18 @@ std::unique_ptr<wort> solution::solutions(solution_type types)
     }
     }
 }
+
+float finished_water::get_solvation(wort_solution wrt) const
+{
+    {
+        if (wrt.finish_wort == 0)
+        {
+            std::cout << "Ошибка... занчение не может быть равным нулю" << std::endl;
+            exit(1);
+        }
+
+        return (wrt.first_wort - wrt.finish_wort) * (wrt.vol_filtrate / wrt.finish_wort);
+    }
+}
+
+float finished_wort::get_solvation(wort_solution wrt) const { return fin_water.get_solvation(wrt) + wrt.vol_filtrate; }
