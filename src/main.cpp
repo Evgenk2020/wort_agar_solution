@@ -72,7 +72,7 @@ void info()
               << "и концентрации приготавливаемого раствора" << std::endl;
 }
 
-void data_run(wort_solution wrt /*float first_solution, float finish_solution, float vol_filtrate*/)
+void data_run(wort_solution wrt)
 {
     std::cout << "Концентрация неразбавленного раствора: " << wrt.first_wort << "%" << std::endl;
     std::cout << "Концентрация разбавленного раствора: " << wrt.finish_wort << "%" << std::endl;
