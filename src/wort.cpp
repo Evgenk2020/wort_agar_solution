@@ -8,7 +8,7 @@ solution::~solution() {}
 class finished_water : public wort
 {
 public:
-    virtual float get_solvation(wort_solution wrt) const;
+    float get_solvation(wort_solution wrt) const;
 };
 
 class finished_wort : public wort
@@ -17,7 +17,7 @@ private:
     finished_water fin_water;
 
 public:
-    virtual float get_solvation(wort_solution wrt) const;
+    float get_solvation(wort_solution wrt) const;
 };
 
 //------------------------------------------------------
@@ -49,7 +49,7 @@ float finished_water::get_solvation(wort_solution wrt) const
 {
     if (wrt.finish_wort == 0)
     {
-        std::cout << "Ошибка... занчение не может быть равным нулю" << std::endl;
+        std::cout << "Ошибка... значение не может быть равным нулю" << std::endl;
         exit(1);
     }
 

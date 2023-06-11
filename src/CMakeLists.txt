@@ -9,7 +9,7 @@ SET(EXECUTABLE_OUTPUT_PATH ${CMAKE_BUILD_RPATH}/bin)
 
 project(wort LANGUAGES CXX)
 
-add_library(wo_conc STATIC wort.h wort.cpp)
+add_library(wo_count STATIC wort.h wort.cpp output.h output.cpp)
 
 add_executable(wort main.cpp)
-target_link_libraries(wort wo_conc)
+target_link_libraries(wort wo_count)
