@@ -14,7 +14,15 @@ Using `-df` key you may write data to `*.csv` file for the next importing to Lib
 
 Use `build.sh` and `run.sh` from the source folder to compile and run the application
 
-For more convenience use SH scheme e.g.
+For more convenience add the path to the application into `.bashrc` 
+
+```
+
+export PATH=$PATH:/%path_to_application_folder/
+
+```
+
+and then use simple SH schemes e.g.
 
 ```SH
 
