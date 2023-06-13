@@ -1,5 +1,5 @@
 # Wort nutrition medium dilution
-Lab utility for determining the concentration of a wort agar medium solution
+Lab utility for determining the concentration of a wort agar medium solution<br>
 Run it with specified keys
 
 ```
