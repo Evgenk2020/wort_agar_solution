@@ -13,3 +13,39 @@ Using `-df` key you may write data to `*.csv` file for the next importing to Lib
 ![Google table data import](/img/screen_02.png)
 
 Use `build.sh` and `run.sh` from the source folder to compile and run the application
+
+For more convenience use SH scheme e.g.
+
+```SH
+
+#!/bin/bash
+
+wort -d 21 4.5 300
+echo "----------------"
+wort -d 21 3 250
+echo "----------------"
+wort -d 15 4.5 200
+echo "----------------"
+wort -d 20 5 280
+echo "----------------"
+wort -d 20.5 4.5 250
+
+exec $SHELL
+
+```
+
+or for writing `wort-dada.csv` use
+
+```SH
+
+#!/bin/bash
+
+wort -df 21 4.5 300 
+wort -df 21 3 250
+wort -df 15 4.5 200
+wort -df 20 5 280
+wort -df 20.5 4.5 250
+
+exec $SHELL
+
+```
