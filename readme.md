@@ -1,11 +1,11 @@
 # Wort nutrition medium dilution
-Lab utility for determining the concentration of a wort agar medium solution
+Lab utility for determining the concentration of a wort agar medium solution via preparing from natural raw components
 
 Run it with specified keys
 
 ```
 
-wort [-d|-df] [first_concentration] [finish_solution_concentration] [filtrate_volume]
+wort [-d|-df] [initial_concentration] [ultimate_concentration] [filtrate_volume]
 
 ```
 
