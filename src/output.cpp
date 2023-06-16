@@ -1,5 +1,6 @@
 #include <iostream>
 #include <fstream>
+#include <locale>
 #include "output.h"
 
 general_info::~general_info() {}
@@ -49,16 +50,21 @@ void screen_info::see_info(wort_solution *wrt)
 
 void file_info::see_info(wort_solution *wrt)
 {
-    std::ofstream writer("wort-dada.csv", std::ios::app);
-    const std::string coma = ",";
+    std::ofstream writer("wort-dada.scv", std::ios::app);
 
-    writer << "Концентрация неразбавленного раствора:" << coma << wrt->first_wort << coma << "%" << std::endl;
-    writer << "Концентрация разбавленного раствора:" << coma << wrt->finish_wort << coma << "%" << std::endl;
-    writer << "Объем фильтрата:" << coma << wrt->vol_filtrate << coma << "мл" << std::endl;
+    const char coma = ',';
+    const char quo = '\"';
+
+    std::locale m_loc("uk_UA.utf8");
+    writer.imbue(m_loc);
+
+    writer << "Концентрация разбавленного раствора:" << coma << quo << wrt->finish_wort << quo << coma << "%" << std::endl;
+    writer << "Объем фильтрата:" << coma << quo << wrt->vol_filtrate << quo << coma << "мл" << std::endl;
 
     solution sol;
-    writer << "Объем воды для разбавления:" << coma << sol.solutions(sol.water_for_solvation)->get_solvation(*wrt) << coma << "мл" << std::endl;
-    writer << "Объем разбавленной среды:" << coma << sol.solutions(sol.total_volume)->get_solvation(*wrt) << coma << "мл" << std::endl;
+
+    writer << "Объем воды для разбавления:" << coma << quo << sol.solutions(sol.water_for_solvation)->get_solvation(*wrt) << quo << coma << "мл" << std::endl;
+    writer << "Объем разбавленной среды:" << coma << quo << sol.solutions(sol.total_volume)->get_solvation(*wrt) << quo << coma << "мл" << std::endl;
     writer << "" << std::endl;
 
     std::cout << "Данные добавлены в файл wort-dada.csv" << std::endl;
