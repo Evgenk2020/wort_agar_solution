@@ -50,7 +50,7 @@ void screen_info::see_info(wort_solution *wrt)
 
 void file_info::see_info(wort_solution *wrt)
 {
-    std::ofstream writer("wort-dada.scv", std::ios::app);
+    std::ofstream writer("wort-dada.csv", std::ios::app);
 
     const char coma = ',';
     const char quo = '\"';
