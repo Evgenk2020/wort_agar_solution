@@ -19,7 +19,7 @@ For more convenience you may add path to the application into `.bashrc` file
 
 ```
 
-export PATH=$PATH:/%path_to_application_folder/
+export PATH=$PATH:/%path_to_application_folder%/
 
 ```
 
