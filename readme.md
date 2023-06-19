@@ -11,7 +11,7 @@ wort [-d|-df] [initial_concentration] [ultimate_concentration] [filtrate_volume]
 
 Using `-df` key you may write data to `*.csv` file for the next importing to LibreOffice Calc, MS Excell or Google Tables
 
-![Google table data import](/img/screen_02.png)
+![Google table data import](/img/screen.png)
 
 Use `build.sh` and `run.sh` from the `src` folder to compile and run the application
 
