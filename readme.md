@@ -5,7 +5,7 @@ Run it with specified keys
 
 ```
 
-wort [-d|-df] [initial_concentration] [ultimate_concentration] [filtrate_volume]
+wort [-d|-df] [initial_concentration_%] [ultimate_concentration_%] [filtrate_volume_ml]
 
 ```
 
