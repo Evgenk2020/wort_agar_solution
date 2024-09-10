@@ -1,1 +1,0 @@
-/usr/lib64/ccache/c++ CMakeFiles/wort.dir/src/main.cpp.o -o app/bin/wort  app/lib/static/libstat.a

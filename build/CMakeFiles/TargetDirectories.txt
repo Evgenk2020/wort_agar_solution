@@ -1,4 +1,0 @@
-/home/evheny/vsprojects/statistics/wort_agar_solution/build/CMakeFiles/stat.dir
-/home/evheny/vsprojects/statistics/wort_agar_solution/build/CMakeFiles/wort.dir
-/home/evheny/vsprojects/statistics/wort_agar_solution/build/CMakeFiles/edit_cache.dir
-/home/evheny/vsprojects/statistics/wort_agar_solution/build/CMakeFiles/rebuild_cache.dir

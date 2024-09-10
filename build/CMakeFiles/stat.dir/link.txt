@@ -1,2 +1,0 @@
-/usr/bin/ar qc app/lib/static/libstat.a CMakeFiles/stat.dir/lib/wort.cpp.o CMakeFiles/stat.dir/lib/output.cpp.o
-/usr/bin/ranlib app/lib/static/libstat.a
