@@ -1,5 +1,5 @@
 #include <iostream>
-#include "output.h"
+#include "../include/output.h"
 
 int main(int argc, char *argv[])
 {

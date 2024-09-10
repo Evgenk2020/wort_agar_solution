@@ -1,6 +1,6 @@
 #include <iostream>
 #include <stdexcept>
-#include "wort.h"
+#include "../include/wort.h"
 
 wort::~wort() {}
 solution::~solution() {}
