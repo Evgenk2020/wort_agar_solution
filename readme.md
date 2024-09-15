@@ -6,7 +6,7 @@ Run it with specified keys
 
 ```
 
-wort -d | -df <initial_concentration_(%)> <ultimate_concentration_(%)> <filtrate_volume_(ml)>
+wort -d | -df [data...]
 
 ```
 
