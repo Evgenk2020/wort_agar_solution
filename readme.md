@@ -44,7 +44,7 @@ exec $SHELL
 
 ```
 
-or for writing `wort-dada.csv` use
+or for writing `.csv` use
 
 ```SH
 
