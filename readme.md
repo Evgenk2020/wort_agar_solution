@@ -74,7 +74,7 @@ On Fedora based systems run
 
 ```SH
 
-sudo dnf groupinstall "Development Tools"
+sudo dnf group install development-tools
 sudo dnf install cmake
 sudo dnf install rpm-build
 
