@@ -3,12 +3,13 @@
 
 #include <memory>
 #include <array>
+#include <string_view>
 
 enum class field
 {
-    first_wort,
-    finish_wort,
-    vol_filtrate,
+    first_wort,   // Початкова концентрація (%)
+    finish_wort,  // Кінцева концентрація (%)
+    vol_filtrate, // Об'єм фільтрату (мл)
     count
 };
 
@@ -20,13 +21,33 @@ struct wort_solution
     {
         return values[static_cast<int>(f)];
     }
+
+    const float &at(field f) const
+    {
+        return values[static_cast<int>(f)];
+    }
+
+    static std::string_view label_of(field f)
+    {
+        switch (f)
+        {
+        case field::first_wort:
+            return "Початкова концентрація сусла (%)";
+        case field::finish_wort:
+            return "Кінцева (бажана) концентрація сусла (%)";
+        case field::vol_filtrate:
+            return "Об'єм фільтрату (мл)";
+        default:
+            return "Невідоме поле";
+        }
+    }
 };
 
 class wort
 {
 public:
     virtual float get_solvation(wort_solution wrt) const = 0;
-    ~wort() = default;
+    virtual ~wort() = default;
 };
 
 class solution

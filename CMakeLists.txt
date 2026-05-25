@@ -11,8 +11,6 @@ set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-# set(CMAKE_BUILD_TYPE Debug)
-
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
@@ -27,6 +25,8 @@ add_executable(${PROJECT_NAME} ${CMAKE_SOURCE_DIR}/src/main.cpp)
 target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_SOURCE_DIR}/include)
 target_link_libraries(${PROJECT_NAME} PUBLIC wort_wlib wort_wlib_output)
 
+file(COPY "${CMAKE_CURRENT_SOURCE_DIR}/sources/" DESTINATION "${CMAKE_BINARY_DIR}")
+
 # -------------------------------------------------------------
 # packaging
 
@@ -37,7 +37,6 @@ set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "Nutrition medium dilution for Linux termi
 if (assemble_tgz)
     install(TARGETS ${PROJECT_NAME} RUNTIME DESTINATION bin)
     install(TARGETS wort_wlib wort_wlib_output LIBRARY DESTINATION lib)
-    install(FILES ${CMAKE_SOURCE_DIR}/sources/wort DESTINATION "." PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_EXECUTE)
     set(CPACK_GENERATOR "TGZ")
 else ()
     include(GNUInstallDirs)

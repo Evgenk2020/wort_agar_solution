@@ -1,10 +1,11 @@
 #include <iostream>
+#include <print>
 #include "../include/wort.h"
 
 class finished_water : public wort
 {
 public:
-    float get_solvation(wort_solution wrt) const;
+    float get_solvation(wort_solution wrt) const override;
 };
 
 class finished_wort : public wort
@@ -13,7 +14,7 @@ private:
     finished_water fin_water;
 
 public:
-    float get_solvation(wort_solution wrt) const;
+    float get_solvation(wort_solution wrt) const override;
 };
 
 //------------------------------------------------------
@@ -36,7 +37,7 @@ std::unique_ptr<wort> solution::solutions(solution_type types)
 
     default:
     {
-        throw "Помилка. Відсутні дані...";
+        std::println(stderr, "Помилка. Відсутні дані...");
         std::exit(EXIT_FAILURE);
     }
     }
@@ -44,13 +45,16 @@ std::unique_ptr<wort> solution::solutions(solution_type types)
 
 float finished_water::get_solvation(wort_solution wrt) const
 {
-    if (wrt.at(field::finish_wort) == 0)
+    if (wrt.at(field::finish_wort) == 0.0f)
     {
-        std::cerr << "Помилка... Значення не може дорівнювати нулю" << std::endl;
+        std::println(stderr, "Помилка... Значення не може дорівнювати нулю");
         std::exit(EXIT_FAILURE);
     }
 
     return (wrt.at(field::first_wort) - wrt.at(field::finish_wort)) * (wrt.at(field::vol_filtrate) / wrt.at(field::finish_wort));
 }
 
-float finished_wort::get_solvation(wort_solution wrt) const { return fin_water.get_solvation(wrt) + wrt.at(field::vol_filtrate); }
+float finished_wort::get_solvation(wort_solution wrt) const
+{
+    return fin_water.get_solvation(wrt) + wrt.at(field::vol_filtrate);
+}

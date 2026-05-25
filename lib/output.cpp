@@ -1,5 +1,4 @@
 #include "../include/output.h"
-
 #include <iostream>
 #include <fstream>
 #include <locale>
@@ -10,26 +9,36 @@
 void help_info::see_info()
 {
     std::println(
-        "*** Визначення об'єму компонентів суслового агару з натуральної сировини ***\n"
+        "*** Визначення об'єму компонентів суслового агару за ключами (флагами) ***\n"
         "\n"
-        "Для виводу в термінал:\n"
-        "d [початкова концентрація (%)] [кінцева концентрація (%)] [об'єм фільтрату (мл)]\n"
+        "1. ІНТЕРАКТИВНИЙ РЕЖИМ (Якщо запущено без прапорців):\n"
+        "   ./wort\n"
         "\n"
-        "Для виводу у файл:\n"
-        "-df [початкова концентрація (%)] [кінцева концентрація (%)] [об'єм фільтрату (мл)]\n"
+        "2. РЕЖИМ АВТОМАТИЗАЦІЇ (Робота з ключами):\n"
+        "   Обов'язкові ключі параметрів:\n"
+        "     -s | --src   [початкова концентрація сусла, %]\n"
+        "     -t | --trg   [кінцева (бажана) концентрація, %]\n"
+        "     -v | --vol   [об'єм фільтрату, мл]\n"
         "\n"
-        "Для довідки:\n"
-        "-h | --help\n"
+        "   Модифікатори виводу (вказати один із них):\n"
+        "     -o | --out   Вивести результати в консоль\n"
+        "     -f | --file  Зберегти результати в CSV-файл\n"
         "\n"
-        "Додаткова інформація:\n"
-        "-i");
+        "   Приклад виводу на екран:\n"
+        "     ./wort -s 12 -t 4 -v 500 -o\n"
+        "   Приклад збереження у файл:\n"
+        "     ./wort --src 15 --trg 5 --vol 1000 --file\n"
+        "\n"
+        "3. ДОДАТКОВО:\n"
+        "   -h | --help    Показати це вікно довідки\n"
+        "   -i             Теоретична довідка (правило хреста)");
 }
 
 void inf_indo::see_info()
 {
     std::println(
         "В лабораторних умовах приготування розчину заданої\n"
-        "масової чатки розчиненої речовини з розчинів\n"
+        "масової частки розчиненої речовини з розчинів\n"
         "з відомою масовою часткою здійснюється відповідно правилу хреста:\n"
         "m1 * W1 + m2 * W2 = W3 * (m1 + m2)\n"
         "\n"
@@ -37,7 +46,7 @@ void inf_indo::see_info()
         "- об'єм води для розведення концентрованого розчину\n"
         "- об'єм розведеного розчину\n"
         "виходячи з концентрації початкового розчину, об'єму фільтрата\n"
-        "і концентрації розчину, який готується");
+        "і концентрації розчину, який готується.");
 }
 
 //--------------------------------------------------
@@ -62,22 +71,21 @@ void screen_info::see_info(wort_solution *wrt)
         case measure_type::percent:
             std::print(percent, label, value);
             break;
-
         case measure_type::filt:
             std::print(flt, label, value);
             break;
-
         case measure_type::volume:
             std::print(volume, label, value);
             break;
         }
     };
 
+    std::println("\n=== РЕЗУЛЬТАТИ РОЗРАХУНКУ СЕРЕДОВИЩА ===");
     line(measure_type::percent, "Концентрація нерозведеного розчина:", wrt->at(field::first_wort));
     line(measure_type::percent, "Концентрація розведеного розчина:", wrt->at(field::finish_wort));
     line(measure_type::filt, "Об'єм фільтрата:", wrt->at(field::vol_filtrate));
-    line(measure_type::volume, "Об'єм води для розчинення:", sol.solutions(sol.water_for_solvation)->get_solvation(*wrt));
-    line(measure_type::volume, "Об'єм розчиненого середовища:", sol.solutions(sol.total_volume)->get_solvation(*wrt));
+    line(measure_type::volume, "Об'єм води для розчинення:", sol.solutions(solution::water_for_solvation)->get_solvation(*wrt));
+    line(measure_type::volume, "Об'єм розчиненого середовища:", sol.solutions(solution::total_volume)->get_solvation(*wrt));
 }
 
 void file_info::see_info(wort_solution *wrt)
@@ -90,7 +98,7 @@ void file_info::see_info(wort_solution *wrt)
     };
 
     namespace file_system = std::filesystem;
-    const file_system::path file{"wort-dada.csv"};
+    const file_system::path file{"wort-data.csv"};
     std::ofstream csv(file, std::ios::app);
     auto loc = std::locale{"uk_UA.utf8"};
 
@@ -105,11 +113,9 @@ void file_info::see_info(wort_solution *wrt)
         case measure_type::percent:
             csv << std::format(loc, percent, label, value);
             break;
-
         case measure_type::filt:
             csv << std::format(loc, flt, label, value);
             break;
-
         case measure_type::volume:
             csv << std::format(loc, volume, label, value);
             break;
@@ -119,10 +125,10 @@ void file_info::see_info(wort_solution *wrt)
     write(measure_type::percent, "Концентрація нерозведеного розчина", wrt->at(field::first_wort));
     write(measure_type::percent, "Концентрація розведеного розчина", wrt->at(field::finish_wort));
     write(measure_type::filt, "Об'єм фільтрата", wrt->at(field::vol_filtrate));
-    write(measure_type::volume, "Об'єм води для розчинення", sol.solutions(sol.water_for_solvation)->get_solvation(*wrt));
-    write(measure_type::volume, "Об'єм розчиненого середовища", sol.solutions(sol.total_volume)->get_solvation(*wrt));
+    write(measure_type::volume, "Об'єм води для розчинення", sol.solutions(solution::water_for_solvation)->get_solvation(*wrt));
+    write(measure_type::volume, "Об'єм розчиненого середовища", sol.solutions(solution::total_volume)->get_solvation(*wrt));
     csv << std::endl;
-    
+
     std::print("Дані додані у файл {}\n", file.string());
 }
 
@@ -131,8 +137,16 @@ void file_info::see_info(wort_solution *wrt)
 print_info::print_info(general_info *temp) : g_info(temp) {}
 print_info::print_info(data_info *temp) : d_info(temp) {}
 
-void print_info::_print() { g_info->see_info(); }
-void print_info::_print(wort_solution temp) { d_info->see_info(&temp); }
+void print_info::_print()
+{
+    if (g_info)
+        g_info->see_info();
+}
+void print_info::_print(wort_solution temp)
+{
+    if (d_info)
+        d_info->see_info(&temp);
+}
 
 print_info::~print_info()
 {
