@@ -16,14 +16,14 @@ set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 
 add_library(wort_wlib SHARED ${CMAKE_SOURCE_DIR}/lib/wort.cpp)
-target_include_directories(wort_wlib PUBLIC ${CMAKE_SOURCE_DIR}/include)
+target_include_directories(wort_wlib PRIVATE ${CMAKE_SOURCE_DIR}/include)
 
 add_library(wort_wlib_output SHARED ${CMAKE_SOURCE_DIR}/lib/output.cpp)
-target_include_directories(wort_wlib_output PUBLIC ${CMAKE_SOURCE_DIR}/include)
+target_include_directories(wort_wlib_output PRIVATE ${CMAKE_SOURCE_DIR}/include)
 
 add_executable(${PROJECT_NAME} ${CMAKE_SOURCE_DIR}/src/main.cpp)
-target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_SOURCE_DIR}/include)
-target_link_libraries(${PROJECT_NAME} PUBLIC wort_wlib wort_wlib_output)
+target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_SOURCE_DIR}/include)
+target_link_libraries(${PROJECT_NAME} PRIVATE wort_wlib wort_wlib_output)
 
 file(COPY "${CMAKE_CURRENT_SOURCE_DIR}/sources/" DESTINATION "${CMAKE_BINARY_DIR}")
 
