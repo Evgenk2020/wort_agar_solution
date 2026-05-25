@@ -14,7 +14,9 @@ static std::expected<float, std::string> parse_float(std::string_view str);
 // Валідатор логіки даних сусла
 static std::expected<wort_solution, std::string> validate_data(const wort_solution &wort);
 // Інтерактивний режим (Wizard)
-static std::expected<float, std::string> parse_float(std::string_view str);
+static wort_solution run_interactive_wizard();
+
+// --------------------------------------------------------------------------------------------------
 
 int main(int argc, char *argv[])
 {
@@ -152,6 +154,8 @@ int main(int argc, char *argv[])
 
     return 0;
 }
+
+// --------------------------------------------------------------------------------------------------
 
 static std::expected<float, std::string> parse_float(std::string_view str)
 {
