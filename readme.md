@@ -188,3 +188,23 @@ This will allow you to run the application in terminal directly
 wort -h
 
 ```
+
+<hr>
+
+## 📑 Citation & Academic Use
+
+If you use this utility or code in your scientific research, lab analysis, or publications, please cite it using the following format. 
+
+GitHub automatically parses the `CITATION.cff` file, so you can easily copy the citation in **APA** or **BibTeX** format directly from the repository sidebar (look for the **"Cite this repository"** button).
+
+### BibTeX Format
+```bibtex
+@software{chlorophyll_linux_2026,
+  author       = {Kopilov, Evheny},
+  title        = {Lab chemical utility for determining the concentration of a wort agar medium solution},
+  month        = may,
+  year         = 2026,
+  publisher    = {GitHub},
+  version      = {1.0.3},
+  url          = {[https://github.com/Evgenk2020/wort-agar-solution](https://github.com/Evgenk2020/wort-agar-solution)}
+}
