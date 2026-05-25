@@ -10,68 +10,13 @@
 #include "../include/output.h"
 
 // Безпечний парсер чисел через std::from_chars
-static std::expected<float, std::string> parse_float(std::string_view str)
-{
-    float val{};
-    auto [ptr, ec] = std::from_chars(str.data(), str.data() + str.size(), val);
-    if (ec != std::errc())
-        return std::unexpected("Некоректне числове значення: '" + std::string(str) + "'");
-    if (val < 0.0f)
-        return std::unexpected("Значення не може бути меншим за нуль");
-    return val;
-}
+static std::expected<float, std::string> parse_float(std::string_view str);
 
-// Валідатор логіки бізнес-даних сусла
-static std::expected<wort_solution, std::string> validate_data(const wort_solution &wort)
-{
-    if (wort.at(field::finish_wort) == 0.0f)
-    {
-        return std::unexpected("Кінцева концентрація не може дорівнювати 0 (ділення на нуль!).");
-    }
-    if (wort.at(field::finish_wort) > wort.at(field::first_wort))
-    {
-        return std::unexpected("Помилка розведення: бажана концентрація вища за початкову!");
-    }
-    if (wort.at(field::vol_filtrate) == 0.0f)
-    {
-        return std::unexpected("Об'єм фільтрату має бути більшим за 0 мл.");
-    }
-    return wort;
-}
+// Валідатор логіки даних сусла
+static std::expected<wort_solution, std::string> validate_data(const wort_solution &wort);
 
 // Інтерактивний режим (Wizard)
-static wort_solution run_interactive_wizard()
-{
-    std::println("\n=== Інтерактивний розрахунок розведення сусла ===");
-    wort_solution wort{};
-
-    auto prompt_field = [](field f) -> float
-    {
-        while (true)
-        {
-            std::print("{}: ", wort_solution::label_of(f));
-            std::string input;
-            std::cin >> input;
-
-            auto res = parse_float(input);
-            if (res)
-                return *res;
-            std::println(stderr, " -> Помилка: {}", res.error());
-        }
-    };
-
-    while (true)
-    {
-        wort.at(field::first_wort) = prompt_field(field::first_wort);
-        wort.at(field::finish_wort) = prompt_field(field::finish_wort);
-        wort.at(field::vol_filtrate) = prompt_field(field::vol_filtrate);
-
-        auto valid = validate_data(wort);
-        if (valid)
-            return *valid;
-        std::println(stderr, "\n[Помилка валідації даних]: {}\nСпробуйте ввести дані заново.", valid.error());
-    }
-}
+static std::expected<float, std::string> parse_float(std::string_view str);
 
 int main(int argc, char *argv[])
 {
@@ -99,6 +44,7 @@ int main(int argc, char *argv[])
             info._print();
             return 0;
         }
+
         if (args[0] == "-i")
         {
             print_info info(new inf_indo);
@@ -124,20 +70,24 @@ int main(int argc, char *argv[])
             target_field = field::first_wort;
             is_param = true;
         }
+
         else if (arg == "-t" || arg == "--trg")
         {
             target_field = field::finish_wort;
             is_param = true;
         }
+
         else if (arg == "-v" || arg == "--vol")
         {
             target_field = field::vol_filtrate;
             is_param = true;
         }
+
         else if (arg == "-o" || arg == "--out")
         {
             output_to_screen = true;
         }
+
         else if (arg == "-f" || arg == "--file")
         {
             output_to_file = true;
@@ -150,12 +100,15 @@ int main(int argc, char *argv[])
                 std::println(stderr, "Помилка: Відсутнє значення для ключа {}", arg);
                 return EXIT_FAILURE;
             }
+
             auto parsed = parse_float(args[++i]);
+
             if (!parsed)
             {
                 std::println(stderr, "Помилка біля ключа {}: {}", arg, parsed.error());
                 return EXIT_FAILURE;
             }
+
             wort.at(target_field) = *parsed;
             set_flags[static_cast<int>(target_field)] = true;
         }
@@ -191,6 +144,7 @@ int main(int argc, char *argv[])
         print_info info(new screen_info);
         info._print(wort);
     }
+    
     if (output_to_file)
     {
         print_info info(new file_info);
@@ -198,4 +152,65 @@ int main(int argc, char *argv[])
     }
 
     return 0;
+}
+
+static std::expected<float, std::string> parse_float(std::string_view str)
+{
+    float val{};
+    auto [ptr, ec] = std::from_chars(str.data(), str.data() + str.size(), val);
+    if (ec != std::errc())
+        return std::unexpected("Некоректне числове значення: '" + std::string(str) + "'");
+    if (val < 0.0f)
+        return std::unexpected("Значення не може бути меншим за нуль");
+    return val;
+}
+
+static std::expected<wort_solution, std::string> validate_data(const wort_solution &wort)
+{
+    if (wort.at(field::finish_wort) == 0.0f)
+    {
+        return std::unexpected("Кінцева концентрація не може дорівнювати 0 (ділення на нуль!).");
+    }
+    if (wort.at(field::finish_wort) > wort.at(field::first_wort))
+    {
+        return std::unexpected("Помилка розведення: бажана концентрація вища за початкову!");
+    }
+    if (wort.at(field::vol_filtrate) == 0.0f)
+    {
+        return std::unexpected("Об'єм фільтрату має бути більшим за 0 мл.");
+    }
+    return wort;
+}
+
+static wort_solution run_interactive_wizard()
+{
+    std::println("\n=== Інтерактивний розрахунок розведення сусла ===");
+    wort_solution wort{};
+
+    auto prompt_field = [](field f) -> float
+    {
+        while (true)
+        {
+            std::print("{}: ", wort_solution::label_of(f));
+            std::string input;
+            std::cin >> input;
+
+            auto res = parse_float(input);
+            if (res)
+                return *res;
+            std::println(stderr, " -> Помилка: {}", res.error());
+        }
+    };
+
+    while (true)
+    {
+        wort.at(field::first_wort) = prompt_field(field::first_wort);
+        wort.at(field::finish_wort) = prompt_field(field::finish_wort);
+        wort.at(field::vol_filtrate) = prompt_field(field::vol_filtrate);
+
+        auto valid = validate_data(wort);
+        if (valid)
+            return *valid;
+        std::println(stderr, "\n[Помилка валідації даних]: {}\nСпробуйте ввести дані заново.", valid.error());
+    }
 }

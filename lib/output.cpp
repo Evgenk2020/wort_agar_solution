@@ -1,4 +1,5 @@
 #include "../include/output.h"
+
 #include <iostream>
 #include <fstream>
 #include <locale>
@@ -71,9 +72,11 @@ void screen_info::see_info(wort_solution *wrt)
         case measure_type::percent:
             std::print(percent, label, value);
             break;
+
         case measure_type::filt:
             std::print(flt, label, value);
             break;
+
         case measure_type::volume:
             std::print(volume, label, value);
             break;
@@ -113,9 +116,11 @@ void file_info::see_info(wort_solution *wrt)
         case measure_type::percent:
             csv << std::format(loc, percent, label, value);
             break;
+
         case measure_type::filt:
             csv << std::format(loc, flt, label, value);
             break;
+
         case measure_type::volume:
             csv << std::format(loc, volume, label, value);
             break;
@@ -142,6 +147,7 @@ void print_info::_print()
     if (g_info)
         g_info->see_info();
 }
+
 void print_info::_print(wort_solution temp)
 {
     if (d_info)
