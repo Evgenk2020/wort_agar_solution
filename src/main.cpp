@@ -11,10 +11,8 @@
 
 // Безпечний парсер чисел через std::from_chars
 static std::expected<float, std::string> parse_float(std::string_view str);
-
 // Валідатор логіки даних сусла
 static std::expected<wort_solution, std::string> validate_data(const wort_solution &wort);
-
 // Інтерактивний режим (Wizard)
 static std::expected<float, std::string> parse_float(std::string_view str);
 
@@ -30,6 +28,7 @@ int main(int argc, char *argv[])
     }
 
     std::vector<std::string_view> args;
+    
     for (int i = 1; i < argc; ++i)
     {
         args.push_back(std::string_view(argv[i]));
@@ -144,7 +143,7 @@ int main(int argc, char *argv[])
         print_info info(new screen_info);
         info._print(wort);
     }
-    
+
     if (output_to_file)
     {
         print_info info(new file_info);
@@ -158,10 +157,17 @@ static std::expected<float, std::string> parse_float(std::string_view str)
 {
     float val{};
     auto [ptr, ec] = std::from_chars(str.data(), str.data() + str.size(), val);
+
     if (ec != std::errc())
+    {
         return std::unexpected("Некоректне числове значення: '" + std::string(str) + "'");
+    }
+
     if (val < 0.0f)
+    {
         return std::unexpected("Значення не може бути меншим за нуль");
+    }
+
     return val;
 }
 
@@ -171,14 +177,17 @@ static std::expected<wort_solution, std::string> validate_data(const wort_soluti
     {
         return std::unexpected("Кінцева концентрація не може дорівнювати 0 (ділення на нуль!).");
     }
+
     if (wort.at(field::finish_wort) > wort.at(field::first_wort))
     {
         return std::unexpected("Помилка розведення: бажана концентрація вища за початкову!");
     }
+
     if (wort.at(field::vol_filtrate) == 0.0f)
     {
         return std::unexpected("Об'єм фільтрату має бути більшим за 0 мл.");
     }
+
     return wort;
 }
 
@@ -196,8 +205,12 @@ static wort_solution run_interactive_wizard()
             std::cin >> input;
 
             auto res = parse_float(input);
+
             if (res)
+            {
                 return *res;
+            }
+
             std::println(stderr, " -> Помилка: {}", res.error());
         }
     };
@@ -209,8 +222,12 @@ static wort_solution run_interactive_wizard()
         wort.at(field::vol_filtrate) = prompt_field(field::vol_filtrate);
 
         auto valid = validate_data(wort);
+
         if (valid)
+        {
             return *valid;
+        }
+
         std::println(stderr, "\n[Помилка валідації даних]: {}\nСпробуйте ввести дані заново.", valid.error());
     }
 }
