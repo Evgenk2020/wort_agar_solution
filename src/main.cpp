@@ -9,18 +9,18 @@
 
 #include "../include/output.h"
 
-// Безпечний парсер чисел через std::from_chars
+// Safe number parser via std::from_chars
 static std::expected<float, std::string> parse_float(std::string_view str);
-// Валідатор логіки даних сусла
+// Data logic validator
 static std::expected<wort_solution, std::string> validate_data(const wort_solution &wort);
-// Інтерактивний режим (Wizard)
+// Interactive mode (Wizard)
 static wort_solution run_interactive_wizard();
 
 // --------------------------------------------------------------------------------------------------
 
 int main(int argc, char *argv[])
 {
-    // Якщо запуск без прапорців — вмикаємо Wizard
+    // When launching without proportions - click Wizard
     if (argc < 2)
     {
         wort_solution wort = run_interactive_wizard();
@@ -36,7 +36,7 @@ int main(int argc, char *argv[])
         args.push_back(std::string_view(argv[i]));
     }
 
-    // Перевірка глобальних інформаційних прапорців
+    // Re-verification of global information sources
     if (args.size() == 1)
     {
         if (args[0] == "-h" || args[0] == "--help")
@@ -54,7 +54,7 @@ int main(int argc, char *argv[])
         }
     }
 
-    // Парсинг ключів (як в хлорофілі)
+    // Parsing keys
     wort_solution wort{};
     std::array<bool, static_cast<int>(field::count)> set_flags{};
     bool output_to_screen = false;
@@ -115,7 +115,7 @@ int main(int argc, char *argv[])
         }
     }
 
-    // Валідація: чи всі обов'язкові ключі параметрів були надані
+    // Validation: all obligatory parameter keys have been supplied
     for (int i = 0; i < static_cast<int>(field::count); ++i)
     {
         if (!set_flags[i])
@@ -125,7 +125,7 @@ int main(int argc, char *argv[])
         }
     }
 
-    // Валідація логіки хімічних значень розведення
+    // Validation of the logic of chemical dilution values
     auto valid = validate_data(wort);
     if (!valid)
     {
@@ -133,10 +133,10 @@ int main(int argc, char *argv[])
         return EXIT_FAILURE;
     }
 
-    // Визначаємо куди виводити
+    // This means where to output
     if (!output_to_screen && !output_to_file)
     {
-        // Дефолтна поведінка, якщо користувач забув вказати прапорець виводу (-o або -f)
+        // Default behavior, if the koristuvach forgot to specify the ensign in the output (-o or -f)
         output_to_screen = true;
     }
 
