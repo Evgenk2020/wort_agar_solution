@@ -145,13 +145,17 @@ print_info::print_info(data_info *temp) : d_info(temp) {}
 void print_info::_print()
 {
     if (g_info)
+    {
         g_info->see_info();
+    }
 }
 
 void print_info::_print(wort_solution temp)
 {
     if (d_info)
+    {
         d_info->see_info(&temp);
+    }
 }
 
 print_info::~print_info()
