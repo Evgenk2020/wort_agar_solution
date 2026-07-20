@@ -15,15 +15,31 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 
-add_library(wort_wlib SHARED ${CMAKE_SOURCE_DIR}/lib/wort.cpp)
+find_package(RapidJSON REQUIRED)
+
+add_library(wort_wlib SHARED ${CMAKE_SOURCE_DIR}/src/wort.cpp)
 target_include_directories(wort_wlib PRIVATE ${CMAKE_SOURCE_DIR}/include)
 
-add_library(wort_wlib_output SHARED ${CMAKE_SOURCE_DIR}/lib/output.cpp)
+add_library(wort_wlib_output SHARED ${CMAKE_SOURCE_DIR}/src/output.cpp)
 target_include_directories(wort_wlib_output PRIVATE ${CMAKE_SOURCE_DIR}/include)
+target_include_directories(wort_wlib_output PRIVATE ${RAPIDJSON_INCLUDE_DIRS})
+
+add_library(wort_wlib_proc SHARED ${CMAKE_SOURCE_DIR}/src/proc.cpp)
+target_include_directories(wort_wlib_proc PRIVATE ${CMAKE_SOURCE_DIR}/include)
 
 add_executable(${PROJECT_NAME} ${CMAKE_SOURCE_DIR}/src/main.cpp)
 target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_SOURCE_DIR}/include)
-target_link_libraries(${PROJECT_NAME} PRIVATE wort_wlib wort_wlib_output)
+target_link_libraries(${PROJECT_NAME} PRIVATE wort_wlib wort_wlib_output wort_wlib_proc)
+
+# -------------------------------------------------------------
+# Google Test
+
+if(BUILD_TESTING)
+    enable_testing()
+    add_subdirectory(tests)
+endif()
+
+# -------------------------------------------------------------
 
 # file(COPY "${CMAKE_CURRENT_SOURCE_DIR}/sources/" DESTINATION "${CMAKE_BINARY_DIR}")
 
@@ -36,12 +52,12 @@ set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "Nutrition medium dilution for Linux termi
 
 if (assemble_tgz)
     install(TARGETS ${PROJECT_NAME} RUNTIME DESTINATION bin)
-    install(TARGETS wort_wlib wort_wlib_output LIBRARY DESTINATION lib)
+    install(TARGETS wort_wlib wort_wlib_output wort_wlib_proc LIBRARY DESTINATION lib)
     set(CPACK_GENERATOR "TGZ")
 else ()
     include(GNUInstallDirs)
     install(TARGETS ${PROJECT_NAME} RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
-    install(TARGETS wort_wlib wort_wlib_output LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR})
+    install(TARGETS wort_wlib wort_wlib_output wort_wlib_proc LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR})
     set(CPACK_GENERATOR "RPM")
     set(CPACK_RPM_PACKAGE_RELOCATABLE "TRUE")
 endif ()
