@@ -7,6 +7,10 @@
 #include <format>
 #include <filesystem>
 
+#include <rapidjson/document.h>
+#include <rapidjson/writer.h>
+#include <rapidjson/stringbuffer.h>
+
 void help_info::see_info()
 {
     std::println(
@@ -24,11 +28,14 @@ void help_info::see_info()
         "   Модифікатори виводу (вказати один із них):\n"
         "     -o | --out   Вивести результати в консоль\n"
         "     -f | --file  Зберегти результати в CSV-файл\n"
+        "     -j | --json  Вивести результати у форматі JSON\n"
         "\n"
         "   Приклад виводу на екран:\n"
         "     ./wort -s 12 -t 4 -v 500 -o\n"
         "   Приклад збереження у файл:\n"
         "     ./wort --src 15 --trg 5 --vol 1000 --file\n"
+        "   Приклад JSON-виводу:\n"
+        "     ./wort -s 12 -t 4 -v 500 -j\n"
         "\n"
         "3. ДОДАТКОВО:\n"
         "   -h | --help    Показати це вікно довідки\n"
@@ -135,6 +142,26 @@ void file_info::see_info(wort_solution *wrt)
     csv << std::endl;
 
     std::print("Дані додані у файл {}\n", file.string());
+}
+
+void json_info::see_info(wort_solution *wrt)
+{
+    rapidjson::Document doc;
+    doc.SetObject();
+    auto &allocator = doc.GetAllocator();
+
+    doc.AddMember("first_wort", wrt->at(field::first_wort), allocator);
+    doc.AddMember("finish_wort", wrt->at(field::finish_wort), allocator);
+    doc.AddMember("vol_filtrate", wrt->at(field::vol_filtrate), allocator);
+
+    doc.AddMember("water_for_solvation", sol.solutions(solution::water_for_solvation)->get_solvation(*wrt), allocator);
+    doc.AddMember("total_volume", sol.solutions(solution::total_volume)->get_solvation(*wrt), allocator);
+
+    rapidjson::StringBuffer buffer;
+    rapidjson::Writer<rapidjson::StringBuffer> writer(buffer);
+    doc.Accept(writer);
+
+    std::println("{}", buffer.GetString());
 }
 
 //--------------------------------------------------

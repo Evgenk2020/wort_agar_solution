@@ -45,16 +45,23 @@ std::unique_ptr<wort> solution::solutions(solution_type types)
 
 float finished_water::get_solvation(wort_solution wrt) const
 {
-    if (wrt.at(field::finish_wort) == 0.0f)
+    /* if (wrt.at(field::finish_wort) == 0.0f)
     {
         std::println(stderr, "Помилка... Значення не може дорівнювати нулю");
         std::exit(EXIT_FAILURE);
+    } */
+
+    if (wrt.at(field::finish_wort) == 0.0f)
+    {
+        throw std::runtime_error("division by zero");
     }
 
-    return (wrt.at(field::first_wort) - wrt.at(field::finish_wort)) * (wrt.at(field::vol_filtrate) / wrt.at(field::finish_wort));
+    // return (wrt.at(field::first_wort) - wrt.at(field::finish_wort)) * (wrt.at(field::vol_filtrate) / wrt.at(field::finish_wort));
+    return static_cast<float>(wrt.at(field::first_wort) - wrt.at(field::finish_wort)) * (wrt.at(field::vol_filtrate) / wrt.at(field::finish_wort));
 }
 
 float finished_wort::get_solvation(wort_solution wrt) const
 {
-    return fin_water.get_solvation(wrt) + wrt.at(field::vol_filtrate);
+    // return fin_water.get_solvation(wrt) + wrt.at(field::vol_filtrate);
+    return static_cast<float>(fin_water.get_solvation(wrt) + wrt.at(field::vol_filtrate));
 }

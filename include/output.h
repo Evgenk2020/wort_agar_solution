@@ -46,6 +46,12 @@ public:
     void see_info(wort_solution *wrt) override;
 };
 
+class json_info : public data_info
+{
+public:
+    void see_info(wort_solution *wrt) override;
+};
+
 //--------------------------------------------------
 
 class print_info
