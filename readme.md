@@ -1,44 +1,52 @@
+[![Version](https://img.shields.io/badge/version-1.0.3-blue)](https://github.com/Evgenk2020/wort-agar-solution)
+[![Latest Release](https://img.shields.io/github/v/release/Evgenk2020/wort-agar-solution)](https://github.com/Evgenk2020/wort-agar-solution/releases)
 [![License](https://img.shields.io/github/license/Evgenk2020/wort-agar-solution)](https://github.com/Evgenk2020/wort-agar-solution/blob/main/LICENSE)
 [![Last Commit](https://img.shields.io/github/last-commit/Evgenk2020/wort-agar-solution)](https://github.com/Evgenk2020/wort-agar-solution/commits)
 [![Repo Size](https://img.shields.io/github/repo-size/Evgenk2020/wort-agar-solution)](https://github.com/Evgenk2020/wort-agar-solution)
 [![Stars](https://img.shields.io/github/stars/Evgenk2020/wort-agar-solution)](https://github.com/Evgenk2020/wort-agar-solution/stargazers)
 [![Forks](https://img.shields.io/github/forks/Evgenk2020/wort-agar-solution)](https://github.com/Evgenk2020/wort-agar-solution/network/members)
 [![Top Language](https://img.shields.io/github/languages/top/Evgenk2020/wort-agar-solution)](https://github.com/Evgenk2020/wort-agar-solution)
-[![Release](https://img.shields.io/github/v/release/Evgenk2020/wort-agar-solution)](https://github.com/Evgenk2020/wort-agar-solution/releases)
-[![Version](https://img.shields.io/badge/version-1.0.3-blue)](https://github.com/Evgenk2020/wort-agar-solution)
 
-# Nutrition medium dilution
+
+# 🧪 Nutrition medium dilution
 
 Lab utility for determining the concentration of a wort agar medium solution via preparing from natural raw components
 
-Run it with specified keys
+Run it in interactive mode
 
 ```
 
-wort -d | -df [data...]
+wort
 
 ```
 
-Using `-df` key you may write data to `*.csv` file for the next importing to LibreOffice Calc, MS Excell or Google Tables
+or run it with specified keys
+
+```
+
+wort -s <src> -t <trg> -v <vol> [-o | -f | -j]
+
+```
+
+Using `-f` key you may write data to `*.csv` file for the next importing to LibreOffice Calc, MS Excell or Google Tables
 
 ![Google table data import](/.img/screen.png)
 
+Using `-j` key you may get output in JSON format
 
-.sh file example for running in terminal
+.sh file example to run in terminal
 
 ```SH
 
 #!/bin/bash
 
-wort -d 21 4.5 300
+echo "measurement 1"
+wort -s 12 -t 4 -v 500 -o
 echo "----------------"
-wort -d 21 3 250
+
+echo "measurement 2"
+wort -s 15 -t 5 -v 1000 -o
 echo "----------------"
-wort -d 15 4.5 200
-echo "----------------"
-wort -d 20 5 280
-echo "----------------"
-wort -d 20.5 4.5 250
 
 exec $SHELL
 
@@ -50,44 +58,51 @@ exec $SHELL
 
 #!/bin/bash
 
-wort -df 21 4.5 300 
-wort -df 21 3 250
-wort -df 15 4.5 200
-wort -df 20 5 280
-wort -df 20.5 4.5 250
+wort -s 12 -t 4 -v 500 -f
+wort -s 15 -t 5 -v 1000 -f
+wort -s 10 -t 3 -v 300 -f
+
+exec $SHELL
+
+```
+
+.sh file example for JSON output
+
+```SH
+
+#!/bin/bash
+
+wort -s 12 -t 4 -v 500 -j
+wort -s 15 -t 5 -v 1000 -j
 
 exec $SHELL
 
 ```
 <hr>
 
-You need to be installed on your Linux system previously:
+## 🛠 Dependencies
 
-- GCC g++
-- CMake
+To build the project from source, you will need:
+* A compiler with full **C++23** support (GCC >= 14, verified with GCC 16)
+* **CMake** (>= 3.31)
+* **RapidJSON** - a fast, header-only JSON parser and generator library
+* **rpm-build** - for Fedora/CentOS Stream
 
-(Fedora/CentOS Stream)
-- rpm-build
-
-On Fedora based systems run
-<br>
+## On Fedora based systems run
 
 ```SH
 
 sudo dnf group install development-tools
-sudo dnf install cmake
-sudo dnf install rpm-build
+sudo dnf install cmake rpm-build rapidjson-devel
 
 ```
 
-On Debian based systems run
-<br>
+## On Debian based systems run
 
 ```SH
 
 sudo apt update
-sudo apt install build-essential
-sudo apt install cmake
+sudo apt install build-essential cmake rapidjson-dev
 
 ```
 
@@ -95,14 +110,13 @@ On other systems see the details of your distro
 
 <hr>
 
-<b>To compile and run the utility (Fedora/CentOS Stream)</b>
+## To compile and run the utility (Fedora/CentOS Stream)
 
 1. Clone the Repository
 
 ```SH
 
 git clone https://github.com/Evgenk2020/wort-agar-solution
-
 cd wort-agar-solution
 
 ```
@@ -112,7 +126,6 @@ cd wort-agar-solution
 ```SH
 
 ./build.sh
-
 cd build
 
 ```
@@ -135,14 +148,13 @@ wort -h
 
 <hr>
 
-<b>If using either than Fedora/CentOS Stream</b>
+## If using other than Fedora/CentOS Stream
 
 1. Clone the Repository
 
 ```SH
 
 git clone https://github.com/Evgenk2020/wort-agar-solution
-
 cd wort-agar-solution
 
 ```
@@ -199,12 +211,12 @@ GitHub automatically parses the `CITATION.cff` file, so you can easily copy the 
 
 ### BibTeX Format
 ```bibtex
-@software{chlorophyll_linux_2026,
+@software{wort_agar_solution_2026,
   author       = {Kopilov, Evheny},
-  title        = {Lab chemical utility for determining the concentration of a wort agar medium solution},
+  title        = {wort-agar-solution: Nutrition medium dilution for laboratory analysis},
   month        = may,
   year         = 2026,
   publisher    = {GitHub},
   version      = {1.0.3},
-  url          = {[https://github.com/Evgenk2020/wort-agar-solution](https://github.com/Evgenk2020/wort-agar-solution)}
+  url          = {https://github.com/Evgenk2020/wort-agar-solution}
 }
