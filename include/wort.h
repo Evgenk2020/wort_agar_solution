@@ -33,10 +33,13 @@ struct wort_solution
         {
         case field::first_wort:
             return "Початкова концентрація сусла (%)";
+
         case field::finish_wort:
             return "Кінцева (бажана) концентрація сусла (%)";
+
         case field::vol_filtrate:
             return "Об'єм фільтрату (мл)";
+
         default:
             return "Невідоме поле";
         }
